@@ -17,19 +17,19 @@ def search(grid):
   start = min(grid)
   end   = max(grid)
 
-  queue = {(0, start)}
+  queue = {0:[start]}
   visit = {start}
 
   while queue:
-    nxt          = min(queue)
-    score, (x,y) = nxt
-    queue.remove(nxt)
+    score = min(queue)
+    x, y  = queue[score].pop()
+    if not queue[score]: del queue[score]
 
     for d in (x+1, y), (x-1, y), (x, y+1), (x, y-1):
       if d == end:
         return score+grid[d]
       elif d not in visit and d in grid:
-        queue.add((score+grid[d], d))
+        queue[score+grid[d]] = queue.get(score+grid[d], []) + [d]
         visit.add(d)
 
 
